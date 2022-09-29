@@ -22,5 +22,4 @@ function Get-CrimesInDistance {
     $InRange = $Crimes | Where-Object {(Get-Distance $HomeLocation (New-Point $_.geocoded_column.Latitude $_.geocoded_column.Latitude)) -lt $Limit};
 
     return $InRange;
-    
 }
