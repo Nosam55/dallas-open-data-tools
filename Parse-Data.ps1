@@ -1,10 +1,14 @@
 function Request-RestData {
     param(
         [Parameter(Mandatory, Position=0)]
-        [string]$URL
+        [string]$URL,
+        [Parameter(ValueFromRemainingArguments)]
+        [string] $CurlArgs
     )
 
-    $response = Invoke-WebRequest -Method GET $URL;
+    $request = "Invoke-WebRequest $($CurlArgs -join ' ') $URL";
+
+    $response = Invoke-Expression $request;
 
     if($response.Headers['Content-Type'] -like '*/json*'){
         return ConvertFrom-Json $response.Content;
@@ -31,5 +35,5 @@ function Get-Schema {
 }
 
 function Read-Config {
-    return ConvertFrom-Json (Get-Content './config.json');
+    return ConvertFrom-Json ((Get-Content './config.json') -join "`n");
 }
